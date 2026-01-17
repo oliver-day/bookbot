@@ -1,4 +1,4 @@
-from stats import get_num_words
+from stats import get_character_count_from_text, get_num_words
 
 
 def main():
@@ -22,17 +22,6 @@ def main():
 def get_book_text(path):
     with open(path) as f:
         return f.read()
-
-
-def get_character_count_from_text(text):
-    character_count_map = {}
-    lower_case_text = text.lower()
-    for character in lower_case_text:
-        if character in character_count_map:
-            character_count_map[character] += 1
-        else:
-            character_count_map[character] = 1
-    return character_count_map
 
 
 def get_alpha_character_count_mapping_list(character_count_map):
