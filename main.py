@@ -1,22 +1,17 @@
-from stats import get_character_count_from_text, get_num_words
+from stats import (
+    get_num_words,
+    chars_dict_to_sorted_list,
+    get_chars_dict,
+)
 
 
 def main():
     book_path = "books/frankenstein.txt"
     text = get_book_text(book_path)
-
-    print(f"--- Begin report of {book_path} ---")
     num_words = get_num_words(text)
-    print(f"Found {num_words} total words")
-    print()
-
-    character_count_map = get_character_count_from_text(text)
-    alpha_character_count_mapping_list = get_alpha_character_count_mapping_list(
-        character_count_map
-    )
-
-    print_character_count_mapping_list(alpha_character_count_mapping_list)
-    print("--- End report ---")
+    chars_dict = get_chars_dict(text)
+    chars_sorted_list = chars_dict_to_sorted_list(chars_dict)
+    print_report(book_path, num_words, chars_sorted_list)
 
 
 def get_book_text(path):
@@ -24,25 +19,18 @@ def get_book_text(path):
         return f.read()
 
 
-def get_alpha_character_count_mapping_list(character_count_map):
-    alpha_character_count_mapping_list = []
-    for character in character_count_map:
-        if character.isalpha() == True:
-            alpha_character_count_mapping_list.append(
-                {"name": character, "num": character_count_map[character]}
-            )
-    alpha_character_count_mapping_list.sort(key=sort_on, reverse=True)
+def print_report(book_path, num_words, chars_sorted_list):
+    print("============ BOOKBOT ============")
+    print(f"Analyzing book found at {book_path}...")
+    print("----------- Word Count ----------")
+    print(f"Found {num_words} total words")
+    print("--------- Character Count -------")
+    for item in chars_sorted_list:
+        if not item["char"].isalpha():
+            continue
+        print(f"{item['char']}: {item['num']}")
 
-    return alpha_character_count_mapping_list
-
-
-def sort_on(dict):
-    return dict["num"]
-
-
-def print_character_count_mapping_list(alpha_character_count_mapping_list):
-    for character in alpha_character_count_mapping_list:
-        print(f"The '{character['name']}' character was found {character['num']} times")
+    print("============= END ===============")
 
 
 if __name__ == "__main__":
